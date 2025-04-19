@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CI Protegida Uruguay</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
+</head>
+<body>
+  <header>
+    <h1>CI Protegida Uruguay</h1>
+    <p>Protegé tu documento antes de compartirlo</p>
+  </header>
+
+  <section class="warning">
+    ⚠️ Este documento contiene datos sensibles. No lo compartas sin protección.
+  </section>
+
+  <main>
+    <div class="tools">
+      <input type="file" id="upload" />
+      <input type="text" id="watermark" placeholder="Marca de agua..." />
+      <select id="tool">
+        <option value="draw">Pincel</option>
+        <option value="blur">Blur</option>
+        <option value="pixel">Pixelado</option>
+      </select>
+      <button onclick="download()">Descargar</button>
+      <button onclick="resetCanvas()">Reset</button>
+    </div>
+    <div class="canvas-container">
+      <canvas id="canvas"></canvas>
+      <img id="overlay" src="overlay.png" alt="Guía" />
+    </div>
+  </main>
+
+  <footer>
+    Basado en SafeID · Adaptado para Uruguay 🇺🇾 · neurus808
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
