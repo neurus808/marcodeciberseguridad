@@ -4,11 +4,29 @@ const ctx = canvas.getContext("2d");
 const upload = document.getElementById("upload");
 const toolSelect = document.getElementById("tool");
 const watermarkInput = document.getElementById("watermark");
+const overlay = document.getElementById("overlay");
+const toggleOverlay = document.getElementById("toggleOverlay");
+const dropArea = document.getElementById("drop-area");
 
 let isDrawing = false;
 let image = null;
 
-upload.addEventListener("change", (e) => {
+upload.addEventListener("change", handleUpload);
+dropArea.addEventListener("click", () => upload.click());
+dropArea.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropArea.style.borderColor = "#003c70";
+});
+dropArea.addEventListener("dragleave", () => {
+  dropArea.style.borderColor = "#0057A8";
+});
+dropArea.addEventListener("drop", (e) => {
+  e.preventDefault();
+  upload.files = e.dataTransfer.files;
+  handleUpload({ target: upload });
+});
+
+function handleUpload(e) {
   const reader = new FileReader();
   reader.onload = (evt) => {
     image = new Image();
@@ -21,7 +39,7 @@ upload.addEventListener("change", (e) => {
     image.src = evt.target.result;
   };
   reader.readAsDataURL(e.target.files[0]);
-});
+}
 
 function drawAt(x, y) {
   const size = 12;
@@ -31,7 +49,7 @@ function drawAt(x, y) {
     ctx.beginPath();
     ctx.arc(x, y, size, 0, Math.PI * 2);
     ctx.fill();
-  } else {
+  } else if (tool === "pixel") {
     const imgData = ctx.getImageData(x, y, size, size);
     let r = 0, g = 0, b = 0;
     for (let i = 0; i < imgData.data.length; i += 4) {
@@ -85,6 +103,10 @@ watermarkInput.addEventListener("input", () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(image, 0, 0);
   addWatermark(watermarkInput.value);
+});
+
+toggleOverlay.addEventListener("change", () => {
+  overlay.style.display = toggleOverlay.checked ? "block" : "none";
 });
 
 function resetCanvas() {
