@@ -73,3 +73,12 @@ footer {
   margin-top: 3rem;
   font-size: 0.9rem;
 }
+
+.logo {
+  max-height: 80px;
+  margin-bottom: 1rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
