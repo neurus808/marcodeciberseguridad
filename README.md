@@ -1,5 +1,5 @@
 
-# CI Protegida Uruguay 🇺🇾
+# ci-uy
 
 **App web para proteger la Cédula de Identidad antes de compartirla.**  
 Ofusca datos sensibles, agrega marcas de agua, y exporta el documento ya protegido.
