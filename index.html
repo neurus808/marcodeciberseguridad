@@ -1,85 +1,99 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Protector de CI Uruguaya</title>
-  <meta name="description" content="Ofuscación y trazabilidad de documentos de identidad uruguayos">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0057A8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CI Protegida Uruguay</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0057A8" />
   <style>
-    body { font-family: sans-serif; text-align: center; background: #f5f5f5; padding: 2em; }
-    canvas { border: 1px solid #aaa; margin-top: 1em; cursor: crosshair; }
-    input, button, label { margin: 0.5em; }
-  </style>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('SW registrado ✅', reg))
-        .catch(err => console.error('SW fallo ❌', err));
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+      color: #333;
     }
-  </script>
+    header {
+      background: #0057A8;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .warning {
+      background: #ffc107;
+      color: #000;
+      text-align: center;
+      padding: 0.5rem;
+      font-weight: bold;
+    }
+    .main {
+      padding: 1rem;
+      text-align: center;
+    }
+    canvas {
+      border: 1px solid #aaa;
+      margin: 1rem auto;
+      display: block;
+      max-width: 100%;
+    }
+    input, button {
+      margin: 0.5rem;
+      padding: 0.5rem;
+    }
+    footer {
+      background: #0057A8;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>Protege tu Cédula de Identidad</h1>
-  <p>Cargá una imagen de tu CI uruguaya, tapá datos sensibles y agregá una marca de agua personalizada.</p>
+  <header>
+    <h1>CI Protegida Uruguay</h1>
+    <p>Protegé tu cédula antes de compartirla</p>
+  </header>
 
-  <input type="file" accept="image/*" id="upload" />
-  <br />
-  <label>Marca de agua: <input type="text" id="watermark" placeholder="Ej: juan@example.com | 18/04/2025" /></label>
-  <br />
-  <button onclick="descargar()">Descargar imagen protegida</button>
+  <div class="warning">
+    ⚠️ Este documento contiene datos sensibles. No compartas tu cédula sin protección.
+  </div>
 
-  <canvas id="canvas"></canvas>
+  <div class="main">
+    <input type="file" id="upload" accept="image/*" />
+    <input type="text" id="watermark" placeholder="Ej: uso exclusivo de juan@example.com" />
+    <button onclick="download()">Descargar</button>
+    <button onclick="clearCanvas()">Reset</button>
 
-  <p><strong>TIP:</strong> Hacé clic y arrastrá sobre la imagen para tapar información confidencial.</p>
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <footer>
+    Basado en SafeID · Adaptado para Uruguay 🇺🇾 · neurus808
+  </footer>
 
   <script>
     const upload = document.getElementById('upload');
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     const watermarkInput = document.getElementById('watermark');
-
     let isDrawing = false;
+    let image = null;
 
     upload.addEventListener('change', (e) => {
       const reader = new FileReader();
-      reader.onload = function(event) {
-        const img = new Image();
-        img.onload = function() {
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx.drawImage(img, 0, 0);
-          agregarMarcaDeAgua(watermarkInput.value);
+      reader.onload = function(evt) {
+        image = new Image();
+        image.onload = function() {
+          canvas.width = image.width;
+          canvas.height = image.height;
+          ctx.drawImage(image, 0, 0);
+          addWatermark(watermarkInput.value);
         };
-        img.src = event.target.result;
+        image.src = evt.target.result;
       };
       reader.readAsDataURL(e.target.files[0]);
     });
-
-    watermarkInput.addEventListener('input', () => {
-      const imgData = canvas.toDataURL();
-      const img = new Image();
-      img.onload = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
-        agregarMarcaDeAgua(watermarkInput.value);
-      };
-      img.src = imgData;
-    });
-
-    function agregarMarcaDeAgua(texto) {
-      ctx.font = "20px sans-serif";
-      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-      ctx.rotate(-0.2);
-      for (let y = 50; y < canvas.height; y += 150) {
-        for (let x = 0; x < canvas.width; x += 300) {
-          ctx.fillText(texto, x, y);
-        }
-      }
-      ctx.rotate(0.2);
-    }
 
     canvas.addEventListener('mousedown', () => isDrawing = true);
     canvas.addEventListener('mouseup', () => isDrawing = false);
@@ -95,11 +109,41 @@
       ctx.fill();
     });
 
-    function descargar() {
+    watermarkInput.addEventListener('input', () => {
+      if (!image) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(image, 0, 0);
+      addWatermark(watermarkInput.value);
+    });
+
+    function addWatermark(text) {
+      ctx.font = "20px Arial";
+      ctx.fillStyle = "rgba(0,0,0,0.3)";
+      ctx.rotate(-0.2);
+      for (let y = 100; y < canvas.height; y += 200) {
+        for (let x = 0; x < canvas.width; x += 400) {
+          ctx.fillText(text, x, y);
+        }
+      }
+      ctx.rotate(0.2);
+    }
+
+    function download() {
       const link = document.createElement('a');
       link.download = 'ci-protegida.png';
       link.href = canvas.toDataURL();
       link.click();
+    }
+
+    function clearCanvas() {
+      if (!image) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(image, 0, 0);
+      addWatermark(watermarkInput.value);
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
     }
   </script>
 </body>

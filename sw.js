@@ -1,6 +1,6 @@
 
-const CACHE_NAME = 'ci-pwa-v1';
-const URLS_TO_CACHE = [
+const CACHE_NAME = 'ci-protegida-cache-v1';
+const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
@@ -9,16 +9,14 @@ const URLS_TO_CACHE = [
   '/icon-512.png'
 ];
 
-self.addEventListener('install', event => {
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(URLS_TO_CACHE))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
   );
 });
 
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request)
-      .then(resp => resp || fetch(event.request))
+    caches.match(event.request).then((response) => response || fetch(event.request))
   );
 });
