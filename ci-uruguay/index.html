@@ -1,50 +1,47 @@
-<!-- index.html -->
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cuida tu Identidad</title>
+  <meta name="viewport" content=device-width, initial-scale=1.0 />
+  <title>Cuida tu Identidad - CI Uruguay</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
     <h1>Cuida tu Identidad</h1>
-    <p>Protegé tu Cédula de Identidad antes de compartirla</p>
+    <p>Aplicación libre para proteger tu Cédula de Identidad</p>
   </header>
 
   <main>
-    <div class="card">
-      <div class="drop-zone-wrapper">
-        <label for="upload" class="drop-zone">
-          📂 Tocá o arrastrá una imagen
-          <input type="file" id="upload" accept="image/*" />
-        </label>
+    <div class="container">
+      <div class="upload-area" id="drop-zone">
+        <input type="file" id="upload" accept="image/*" />
+        <p> Arrastrá tu imagen o tocá aquí para seleccionarla</p>
       </div>
 
-      <input type="text" id="watermark" placeholder="Marca de agua sugerida (ej: uso exclusivo de...)" />
+      <div class="controls">
+        <label for="watermark">Marca de agua:</label>
+        <input type="text" id="watermark" placeholder="Ej: Uso exclusivo de..." />
 
-      <div class="control-group">
         <label for="tool">Herramienta:</label>
         <select id="tool">
           <option value="draw">Pincel</option>
           <option value="pixel">Pixelado</option>
         </select>
-      </div>
 
-      <div class="control-group">
-        <label for="iaEffect">Efecto IA:</label>
+        <label for="iaEffect">Efecto IA (opcional):</label>
         <select id="iaEffect">
           <option value="none">Sin efecto</option>
           <option value="waves">Ondas</option>
           <option value="lines">Isolíneas</option>
           <option value="distort">Deformación</option>
         </select>
-      </div>
 
-      <div class="buttons">
-        <button onclick="download()">Descargar</button>
-        <button onclick="resetCanvas()">Reset</button>
+        <div class="buttons">
+          <button onclick="download()">Descargar</button>
+          <button onclick="resetCanvas()">Reset</button>
+        </div>
       </div>
 
       <canvas id="canvas"></canvas>
@@ -52,7 +49,7 @@
   </main>
 
   <footer>
-    <p> H4NDSHAKE | URUGUAY </p>
+    HANDSHAKE | URUGUAY
   </footer>
 
   <script src="script.js"></script>
