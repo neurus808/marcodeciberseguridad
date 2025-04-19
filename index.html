@@ -1,150 +1,49 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#0057A8"/>
   <title>CI Protegida Uruguay</title>
+  <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0057A8" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f4f4f4;
-      color: #333;
-    }
-    header {
-      background: #0057A8;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-    .warning {
-      background: #ffc107;
-      color: #000;
-      text-align: center;
-      padding: 0.5rem;
-      font-weight: bold;
-    }
-    .main {
-      padding: 1rem;
-      text-align: center;
-    }
-    canvas {
-      border: 1px solid #aaa;
-      margin: 1rem auto;
-      display: block;
-      max-width: 100%;
-    }
-    input, button {
-      margin: 0.5rem;
-      padding: 0.5rem;
-    }
-    footer {
-      background: #0057A8;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-  </style>
+  <link rel="icon" href="icon-192.png" />
+  <script src="anime.min.js"></script>
 </head>
 <body>
-  <header>
+  <header class="header">
     <h1>CI Protegida Uruguay</h1>
-    <p>Protegé tu cédula antes de compartirla</p>
+    <p>Protegé tu documento antes de compartirlo</p>
   </header>
 
-  <div class="warning">
-    ⚠️ Este documento contiene datos sensibles. No compartas tu cédula sin protección.
-  </div>
+  <section class="warning">
+    ⚠️ Este documento contiene datos sensibles. No lo compartas sin protección.
+  </section>
 
-  <div class="main">
-    <input type="file" id="upload" accept="image/*" />
-    <input type="text" id="watermark" placeholder="Ej: uso exclusivo de juan@example.com" />
-    <button onclick="download()">Descargar</button>
-    <button onclick="clearCanvas()">Reset</button>
+  <main>
+    <div class="controls">
+      <input type="file" id="upload" accept="image/*" />
+      <input type="text" id="watermark" placeholder="Marca de agua (ej: para uso de...)" />
+      <select id="tool">
+        <option value="draw">Pincel</option>
+        <option value="blur">Blur</option>
+        <option value="pixel">Pixelado</option>
+      </select>
+      <button onclick="download()">Descargar</button>
+      <button onclick="resetCanvas()">Reset</button>
+    </div>
 
-    <canvas id="canvas"></canvas>
-  </div>
+    <div class="canvas-wrapper">
+      <canvas id="canvas"></canvas>
+      <img id="overlay" src="overlay.png" alt="Guía CI" />
+    </div>
+  </main>
 
-  <footer>
+  <footer class="footer">
     Basado en SafeID · Adaptado para Uruguay 🇺🇾 · neurus808
   </footer>
 
-  <script>
-    const upload = document.getElementById('upload');
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const watermarkInput = document.getElementById('watermark');
-    let isDrawing = false;
-    let image = null;
-
-    upload.addEventListener('change', (e) => {
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        image = new Image();
-        image.onload = function() {
-          canvas.width = image.width;
-          canvas.height = image.height;
-          ctx.drawImage(image, 0, 0);
-          addWatermark(watermarkInput.value);
-        };
-        image.src = evt.target.result;
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    });
-
-    canvas.addEventListener('mousedown', () => isDrawing = true);
-    canvas.addEventListener('mouseup', () => isDrawing = false);
-    canvas.addEventListener('mouseout', () => isDrawing = false);
-    canvas.addEventListener('mousemove', (e) => {
-      if (!isDrawing) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      ctx.fillStyle = "black";
-      ctx.beginPath();
-      ctx.arc(x, y, 15, 0, 2 * Math.PI);
-      ctx.fill();
-    });
-
-    watermarkInput.addEventListener('input', () => {
-      if (!image) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(image, 0, 0);
-      addWatermark(watermarkInput.value);
-    });
-
-    function addWatermark(text) {
-      ctx.font = "20px Arial";
-      ctx.fillStyle = "rgba(0,0,0,0.3)";
-      ctx.rotate(-0.2);
-      for (let y = 100; y < canvas.height; y += 200) {
-        for (let x = 0; x < canvas.width; x += 400) {
-          ctx.fillText(text, x, y);
-        }
-      }
-      ctx.rotate(0.2);
-    }
-
-    function download() {
-      const link = document.createElement('a');
-      link.download = 'ci-protegida.png';
-      link.href = canvas.toDataURL();
-      link.click();
-    }
-
-    function clearCanvas() {
-      if (!image) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(image, 0, 0);
-      addWatermark(watermarkInput.value);
-    }
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js');
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,46 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f4f4;
+  color: #333;
+}
+.header {
+  background: #0057A8;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+.warning {
+  background: #ffc107;
+  color: #000;
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: bold;
+}
+.controls {
+  padding: 1rem;
+  text-align: center;
+}
+.canvas-wrapper {
+  text-align: center;
+  position: relative;
+}
+canvas {
+  border: 1px solid #aaa;
+  max-width: 100%;
+}
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.2;
+  pointer-events: none;
+}
+.footer {
+  background: #0057A8;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}

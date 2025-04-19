@@ -3,6 +3,8 @@ const CACHE_NAME = 'ci-protegida-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/style.css',
+  '/script.js',
   '/manifest.json',
   '/sw.js',
   '/icon-192.png',
