@@ -1,66 +1,59 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cuida tu Identidad</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="icon-192.png" />
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>Cuida tu Identidad</h1>
-      <p>Protegé tu CI antes de compartirla</p>
-    </header>
+  <header>
+    <h1>Cuida tu Identidad</h1>
+    <p>Protegé tu Cédula de Identidad antes de compartirla</p>
+  </header>
 
-    <main>
-      <div class="card">
-        <!-- 📂 Zona de carga funcional -->
-        <div class="drop-zone-wrapper">
-          <label for="upload" class="drop-zone">
-            📂 Tocá o arrastrá una imagen
-            <input type="file" id="upload" accept="image/*" />
-          </label>
-        </div>
-
-        <input type="text" id="watermark" placeholder="Marca de agua (sugerida: uso exclusivo para...)" />
-
-        <div class="options">
-          <label>Herramienta:</label>
-          <select id="tool">
-            <option value="draw">Pincel</option>
-            <option value="pixel">Pixelado</option>
-          </select>
-        </div>
-
-        <div class="options">
-          <label>Efecto IA:</label>
-          <select id="iaEffect">
-            <option value="none">Sin efecto</option>
-            <option value="waves">Ondas</option>
-            <option value="lines">Isolíneas</option>
-            <option value="distort">Deformación</option>
-          </select>
-        </div>
-
-        <div class="buttons">
-          <button onclick="download()">Descargar</button>
-          <button onclick="resetCanvas()">Reset</button>
-        </div>
-
-        <div class="canvas-container">
-          <canvas id="canvas"></canvas>
-          <img id="overlay" src="overlay.png" alt="Guía CI" />
-        </div>
+  <main>
+    <div class="card">
+      <div class="drop-zone-wrapper">
+        <label for="upload" class="drop-zone">
+          📂 Tocá o arrastrá una imagen
+          <input type="file" id="upload" accept="image/*" />
+        </label>
       </div>
-    </main>
 
-    <footer>
-      © Cuida tu Identidad · Uruguay 🇺🇾
-    </footer>
-  </div>
+      <input type="text" id="watermark" placeholder="Marca de agua sugerida (ej: uso exclusivo de...)" />
+
+      <div class="control-group">
+        <label for="tool">Herramienta:</label>
+        <select id="tool">
+          <option value="draw">Pincel</option>
+          <option value="pixel">Pixelado</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label for="iaEffect">Efecto IA:</label>
+        <select id="iaEffect">
+          <option value="none">Sin efecto</option>
+          <option value="waves">Ondas</option>
+          <option value="lines">Isolíneas</option>
+          <option value="distort">Deformación</option>
+        </select>
+      </div>
+
+      <div class="buttons">
+        <button onclick="download()">Descargar</button>
+        <button onclick="resetCanvas()">Reset</button>
+      </div>
+
+      <canvas id="canvas"></canvas>
+    </div>
+  </main>
+
+  <footer>
+    <p> H4NDSHAKE | URUGUAY </p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
