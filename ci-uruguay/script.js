@@ -7,13 +7,20 @@ const watermarkInput = document.getElementById("watermark");
 const iaEffect = document.getElementById("iaEffect");
 const overlay = document.getElementById("overlay");
 const dropZone = document.getElementById("drop-zone");
-const dropText = document.getElementById("drop-text");
 
 let isDrawing = false;
 let image = null;
 
-// Carga y renderizado
-upload.addEventListener("change", handleUpload);
+// Asegurar el input funcione en móviles
+upload.addEventListener("change", (e) => {
+  if (!e.target.files || !e.target.files[0]) {
+    alert("No se pudo cargar la imagen. Probá nuevamente.");
+    return;
+  }
+  handleUpload(e);
+});
+
+// Drag & drop
 dropZone.addEventListener("click", () => upload.click());
 dropZone.addEventListener("dragover", (e) => {
   e.preventDefault();
@@ -41,7 +48,9 @@ function handleUpload(e) {
     };
     image.src = evt.target.result;
   };
-  reader.readAsDataURL(e.target.files[0]);
+  const file = e.target.files[0];
+  if (!file) return;
+  reader.readAsDataURL(file);
 }
 
 function applyEffects() {
@@ -97,7 +106,7 @@ canvas.addEventListener("touchmove", (e) => {
 }, { passive: false });
 
 watermarkInput.addEventListener("input", applyEffects);
-iaEffect.addEventListener("change", applyEffects);
+iaEffect?.addEventListener("change", applyEffects);
 
 function addWatermark(text) {
   ctx.save();
