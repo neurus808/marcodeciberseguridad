@@ -17,10 +17,13 @@
 
     <main>
       <div class="card">
-        <label for="upload" class="drop-zone" id="drop-zone">
-          <input type="file" id="upload" accept="image/*" hidden />
-          <span id="drop-text">📂 Arrastrá una imagen o tocá para seleccionar</span>
-        </label>
+        <!-- 📂 Zona de carga funcional -->
+        <div class="drop-zone-wrapper">
+          <label for="upload" class="drop-zone">
+            📂 Tocá o arrastrá una imagen
+            <input type="file" id="upload" accept="image/*" />
+          </label>
+        </div>
 
         <input type="text" id="watermark" placeholder="Marca de agua (sugerida: uso exclusivo para...)" />
 
