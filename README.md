@@ -1,57 +1,49 @@
-# CI Protegida 🇺🇾
+# CI Protegida Uruguay 🇺🇾
 
-**App gratuita y abierta para proteger la Cédula de Identidad uruguaya.**  
-Permite ofuscar datos sensibles y agregar marcas de agua personalizadas para trazabilidad.
+**App web para proteger la Cédula de Identidad antes de compartirla.**  
+Ofusca datos sensibles, agrega marcas de agua, y exporta el documento ya protegido.
 
-🔐 Todo el procesamiento ocurre en tu navegador. No se sube nada a ningún servidor.
-
-![preview](preview.png) <!-- Podés subir una captura después -->
+🔐 Todo el procesamiento ocurre en tu navegador. No se sube ningún dato.
 
 ---
 
-## ✨ ¿Qué podés hacer?
+## 🧰 Funcionalidades
 
-- 🖍 Ocultar manualmente datos (número de cédula, rostro, MRZ, etc.)
-- 🧩 Agregar marca de agua con email, fecha, propósito, etc.
-- 📥 Descargar el documento protegido con trazabilidad
-- 💾 Instalarla como app en el celular (funciona offline como PWA)
-
----
-
-## 🚀 Cómo usarla
-
-1. Subí una imagen escaneada o foto de tu Cédula.
-2. Arrastrá el mouse para tapar zonas sensibles.
-3. Ingresá un texto de marca de agua.
-4. Descargá el resultado y compartilo de forma segura.
-
-👉 Usala directamente acá:  
-[https://neurus808.github.io/ci-uruguay](https://neurus808.github.io/ci-uruguay)
+- ✍️ Pincel negro para tapar datos
+- 🌫️ Blur selectivo
+- 🧱 Pixelado por zonas
+- 🧩 Marca de agua personalizada
+- 📷 Imagen de ejemplo con overlay
+- 💾 Exportación como imagen (PNG)
+- 📱 PWA: instalable y usable offline
 
 ---
 
-## 🧱 Tecnologías
+## 🚀 ¿Cómo usarla?
 
-- HTML5 + Canvas API
-- JavaScript puro (vanilla JS)
-- Service Worker (PWA)
-- GitHub Pages
+1. Subí una imagen de tu Cédula
+2. Usá las herramientas para tapar zonas sensibles
+3. Agregá una marca de agua (opcional)
+4. Exportá como imagen protegida
 
 ---
 
-## 🤝 Basado en
+## 🔗 Accedé a la app
 
-Este proyecto fue inspirado en:
+👉 [https://marcodeciberseguridad.com.uy](https://marcodeciberseguridad.com.uy)
 
-- [SafeID (Datos Argentinos)](https://github.com/Xyborg/datosargentinos.com)  
+---
+
+## 📘 Créditos
+
+Basado en:
+- [SafeID (datosargentinos.com)](https://github.com/Xyborg/datosargentinos.com)
 - [SaferLayer](https://saferlayer.com)
 
-Gracias a estas iniciativas por sentar las bases de protección documental.
+Adaptado y extendido para Uruguay por [@neurus808](https://github.com/neurus808)
 
 ---
 
-## 📘 Licencia
+## 📄 Licencia
 
-MIT — libre para usar, mejorar y compartir.  
-Hecho con ❤️ desde Uruguay por [@neurus808](https://github.com/neurus808)
-
+MIT
