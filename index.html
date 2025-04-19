@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cuida tu Identidad</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Cuida tu Identidad</h1>
+      <p>Protegé tu CI antes de compartirla</p>
+    </header>
+
+    <main>
+      <div class="card">
+        <label for="upload" class="drop-zone" id="drop-zone">
+          <input type="file" id="upload" accept="image/*" hidden />
+          <span id="drop-text">📂 Arrastrá una imagen o tocá para seleccionar</span>
+        </label>
+
+        <input type="text" id="watermark" placeholder="Marca de agua (sugerida: uso exclusivo para...)" />
+
+        <div class="options">
+          <label>Herramienta:</label>
+          <select id="tool">
+            <option value="draw">Pincel</option>
+            <option value="pixel">Pixelado</option>
+          </select>
+        </div>
+
+        <div class="options">
+          <label>Efecto IA:</label>
+          <select id="iaEffect">
+            <option value="none">Sin efecto</option>
+            <option value="waves">Ondas</option>
+            <option value="lines">Isolíneas</option>
+            <option value="distort">Deformación</option>
+          </select>
+        </div>
+
+        <div class="buttons">
+          <button onclick="download()">Descargar</button>
+          <button onclick="resetCanvas()">Reset</button>
+        </div>
+
+        <div class="canvas-container">
+          <canvas id="canvas"></canvas>
+          <img id="overlay" src="overlay.png" alt="Guía CI" />
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      © Cuida tu Identidad · Uruguay 🇺🇾
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

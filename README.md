@@ -1,32 +1,62 @@
 
-# ci-uy
+# Cuida tu Identidad (CI) 🇺🇾
 
-**App web para proteger la Cédula de Identidad antes de compartirla.**  
-Ofusca datos sensibles, agrega marcas de agua, y exporta el documento ya protegido.
+**Aplicación web para proteger tu Cédula de Identidad antes de compartirla.**  
+Permite ocultar información personal, agregar marcas de agua y exportar una imagen segura desde tu navegador.
 
-🔐 Todo el procesamiento ocurre en tu navegador. No se sube ningún dato.
+---
 
-## Funcionalidades
+## 🧰 Funcionalidades
 
-- ✍️ Pincel negro para tapar datos
-- 🌫️ Blur selectivo
-- 🧱 Pixelado por zonas
+- ✍️ Herramienta de pincel
+- 🧱 Pixelado de zonas específicas
 - 🧩 Marca de agua personalizada
-- 📷 Imagen de ejemplo con overlay
-- 💾 Exportación como imagen (PNG)
-- 📱 PWA: instalable y usable offline
+- 🧬 Efectos resistentes a IA:
+  - Ondas
+  - Isolíneas
+  - Deformaciones
+- 📂 Carga de imagen por drag & drop o selección directa
+- 📷 Guía visual para zonas sensibles de la CI uruguaya
+- 📱 Totalmente responsiva (funciona en iPhone, Android y desktop)
+- 💾 Exportación a PNG
+- 🔒 Todo se procesa en tu navegador (sin subir nada)
 
-## Uso
+---
 
-1. Subí una imagen de tu Cédula
-2. Usá las herramientas para tapar zonas sensibles
-3. Agregá una marca de agua (opcional)
-4. Exportá como imagen protegida
+## 📸 Capturas
 
-## Créditos
+> _(Agregar capturas de pantalla aquí si querés mostrarlas en GitHub Pages o el README)_
 
-Basado en:
-- [SafeID (datosargentinos.com)](https://github.com/Xyborg/datosargentinos.com)
+---
+
+## 🚀 ¿Cómo usar?
+
+1. Abrí la app y subí una imagen de tu Cédula de Identidad.
+2. Seleccioná la herramienta: **pincel** o **pixelado**.
+3. Aplicá una **marca de agua** (opcional).
+4. Activá (o no) un **efecto anti-IA**.
+5. Exportá la imagen protegida.
+
+---
+
+## 🎨 Estética
+
+Inspirado en el diseño visual de [Safe ID](https://safeid.datosargentinos.com)  
+Adaptado con paleta institucional de AGESIC (Uruguay).
+
+---
+
+## 🧠 Créditos
+
+Proyecto basado en:
+
+- [SafeID - Datos Argentinos](https://github.com/Xyborg/datosargentinos.com)
 - [SaferLayer](https://saferlayer.com)
 
-Adaptado y extendido para Uruguay por [@neurus808](https://github.com/neurus808)
+Desarrollado por [@neurus808](https://github.com/neurus808) para uso libre en Uruguay 🇺🇾
+
+---
+
+## 📄 Licencia
+
+MIT
