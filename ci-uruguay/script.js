@@ -2,25 +2,23 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const upload = document.getElementById("upload");
+const dropZone = document.getElementById("drop-zone");
 const toolSelect = document.getElementById("tool");
 const watermarkInput = document.getElementById("watermark");
 const iaEffect = document.getElementById("iaEffect");
 const overlay = document.getElementById("overlay");
-const dropZone = document.getElementById("drop-zone");
 
-let isDrawing = false;
 let image = null;
+let isDrawing = false;
 
-// Asegurar el input funcione en móviles
+// 📂 Carga por input convencional
 upload.addEventListener("change", (e) => {
-  if (!e.target.files || !e.target.files[0]) {
-    alert("No se pudo cargar la imagen. Probá nuevamente.");
-    return;
-  }
-  handleUpload(e);
+  const file = e.target.files?.[0];
+  if (!file) return;
+  loadImage(file);
 });
 
-// Drag & drop
+// 📂 Carga por drag & drop
 dropZone.addEventListener("click", () => upload.click());
 dropZone.addEventListener("dragover", (e) => {
   e.preventDefault();
@@ -32,52 +30,47 @@ dropZone.addEventListener("dragleave", () => {
 dropZone.addEventListener("drop", (e) => {
   e.preventDefault();
   dropZone.classList.remove("active");
-  upload.files = e.dataTransfer.files;
-  handleUpload({ target: upload });
+  const file = e.dataTransfer.files?.[0];
+  if (file) loadImage(file);
 });
 
-function handleUpload(e) {
+function loadImage(file) {
   const reader = new FileReader();
-  reader.onload = (evt) => {
+  reader.onload = (e) => {
     image = new Image();
     image.onload = () => {
       canvas.width = image.width;
       canvas.height = image.height;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(image, 0, 0);
-      applyEffects();
+      addWatermark(watermarkInput.value);
+      if (iaEffect) addIAEffect(iaEffect.value);
     };
-    image.src = evt.target.result;
+    image.src = e.target.result;
   };
-  const file = e.target.files[0];
-  if (!file) return;
   reader.readAsDataURL(file);
 }
 
-function applyEffects() {
-  if (!image) return;
-  ctx.drawImage(image, 0, 0);
-  addWatermark(watermarkInput.value);
-  addIAEffect(iaEffect.value);
-}
-
+// 🖍️ Herramientas: pincel y pixelado
 function drawAt(x, y) {
   const size = 12;
   const tool = toolSelect.value;
+
   if (tool === "draw") {
     ctx.fillStyle = "black";
     ctx.beginPath();
-    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.arc(x, y, size, 0, 2 * Math.PI);
     ctx.fill();
   } else if (tool === "pixel") {
     const imgData = ctx.getImageData(x, y, size, size);
     let r = 0, g = 0, b = 0;
+    const total = imgData.data.length / 4;
     for (let i = 0; i < imgData.data.length; i += 4) {
       r += imgData.data[i];
       g += imgData.data[i + 1];
       b += imgData.data[i + 2];
     }
-    const count = imgData.data.length / 4;
-    r /= count; g /= count; b /= count;
+    r /= total; g /= total; b /= total;
     for (let i = 0; i < imgData.data.length; i += 4) {
       imgData.data[i] = r;
       imgData.data[i + 1] = g;
@@ -87,26 +80,45 @@ function drawAt(x, y) {
   }
 }
 
-function handlePointerMove(e) {
-  if (!isDrawing || !image) return;
+function getPointerPos(e) {
   const rect = canvas.getBoundingClientRect();
-  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-  drawAt(x, y);
+  const px = e.touches ? e.touches[0].clientX : e.clientX;
+  const py = e.touches ? e.touches[0].clientY : e.clientY;
+  return {
+    x: (px - rect.left) * (canvas.width / rect.width),
+    y: (py - rect.top) * (canvas.height / rect.height)
+  };
 }
 
+// Eventos de dibujo
 canvas.addEventListener("mousedown", () => isDrawing = true);
 canvas.addEventListener("mouseup", () => isDrawing = false);
-canvas.addEventListener("mousemove", handlePointerMove);
-canvas.addEventListener("touchstart", () => isDrawing = true);
+canvas.addEventListener("mouseleave", () => isDrawing = false);
+canvas.addEventListener("mousemove", (e) => {
+  if (!isDrawing || !image) return;
+  const { x, y } = getPointerPos(e);
+  drawAt(x, y);
+});
+
+canvas.addEventListener("touchstart", (e) => {
+  isDrawing = true;
+  e.preventDefault();
+});
 canvas.addEventListener("touchend", () => isDrawing = false);
 canvas.addEventListener("touchmove", (e) => {
   e.preventDefault();
-  handlePointerMove(e);
+  if (!isDrawing || !image) return;
+  const { x, y } = getPointerPos(e);
+  drawAt(x, y);
 }, { passive: false });
 
-watermarkInput.addEventListener("input", applyEffects);
-iaEffect?.addEventListener("change", applyEffects);
+watermarkInput.addEventListener("input", () => {
+  if (!image) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(image, 0, 0);
+  addWatermark(watermarkInput.value);
+  if (iaEffect) addIAEffect(iaEffect.value);
+});
 
 function addWatermark(text) {
   ctx.save();
@@ -122,12 +134,9 @@ function addWatermark(text) {
 }
 
 function addIAEffect(effect) {
-  if (!image || effect === "none") return;
-
   ctx.save();
   ctx.lineWidth = 1;
   ctx.strokeStyle = "rgba(0,0,0,0.08)";
-
   if (effect === "waves") {
     for (let y = 0; y < canvas.height; y += 20) {
       ctx.beginPath();
@@ -153,14 +162,15 @@ function addIAEffect(effect) {
       ctx.stroke();
     }
   }
-
   ctx.restore();
 }
 
 function resetCanvas() {
   if (!image) return;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  applyEffects();
+  ctx.drawImage(image, 0, 0);
+  addWatermark(watermarkInput.value);
+  if (iaEffect) addIAEffect(iaEffect.value);
 }
 
 function download() {
