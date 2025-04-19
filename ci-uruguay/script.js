@@ -1,3 +1,4 @@
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const upload = document.getElementById("upload");
@@ -10,44 +11,42 @@ let isDrawing = false;
 
 upload.addEventListener("change", (e) => {
   const file = e.target.files?.[0];
-  if (file) loadImage(file);
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      image = new Image();
+      image.onload = () => {
+        canvas.width = image.width;
+        canvas.height = image.height;
+        drawCanvas();
+      };
+      image.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
 });
 
-function loadImage(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    image = new Image();
-    image.onload = () => {
-      canvas.width = image.width;
-      canvas.height = image.height;
-      drawCanvas();
-    };
-    image.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
 function drawCanvas() {
+  if (!image) return;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(image, 0, 0);
   addWatermark(watermarkInput.value);
   if (iaEffect.value !== "none") addIAEffect(iaEffect.value);
 }
 
-function getPointer(e) {
+function getPointerPos(e) {
   const rect = canvas.getBoundingClientRect();
   const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
   const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
   return {
     x: (x * canvas.width) / rect.width,
-    y: (y * canvas.height) / rect.height,
+    y: (y * canvas.height) / rect.height
   };
 }
 
 function drawAt(x, y) {
   const size = 12;
   const tool = toolSelect.value;
-
   if (tool === "draw") {
     ctx.fillStyle = "black";
     ctx.beginPath();
@@ -56,15 +55,13 @@ function drawAt(x, y) {
   } else if (tool === "pixel") {
     const imgData = ctx.getImageData(x, y, size, size);
     let r = 0, g = 0, b = 0;
-    const count = imgData.data.length / 4;
+    const total = imgData.data.length / 4;
     for (let i = 0; i < imgData.data.length; i += 4) {
       r += imgData.data[i];
       g += imgData.data[i + 1];
       b += imgData.data[i + 2];
     }
-    r /= count;
-    g /= count;
-    b /= count;
+    r /= total; g /= total; b /= total;
     for (let i = 0; i < imgData.data.length; i += 4) {
       imgData.data[i] = r;
       imgData.data[i + 1] = g;
@@ -79,23 +76,28 @@ canvas.addEventListener("mouseup", () => isDrawing = false);
 canvas.addEventListener("mouseleave", () => isDrawing = false);
 canvas.addEventListener("mousemove", (e) => {
   if (!isDrawing || !image) return;
-  const { x, y } = getPointer(e);
+  const { x, y } = getPointerPos(e);
   drawAt(x, y);
 });
 
 canvas.addEventListener("touchstart", () => isDrawing = true);
 canvas.addEventListener("touchend", () => isDrawing = false);
+canvas.addEventListener("touchcancel", () => isDrawing = false);
 canvas.addEventListener("touchmove", (e) => {
   if (!isDrawing || !image) return;
-  const { x, y } = getPointer(e);
+  const { x, y } = getPointerPos(e);
   drawAt(x, y);
 }, { passive: false });
 
+watermarkInput.addEventListener("input", () => {
+  if (image) drawCanvas();
+});
+
 function addWatermark(text) {
-  if (!text || !image) return;
+  if (!text || !canvas.width || !canvas.height) return;
   ctx.save();
   ctx.font = "20px Arial";
-  ctx.fillStyle = "rgba(0,0,0,0.15)";
+  ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
   ctx.rotate(-0.2);
   for (let y = 100; y < canvas.height; y += 180) {
     for (let x = 0; x < canvas.width; x += 300) {
@@ -107,8 +109,8 @@ function addWatermark(text) {
 
 function addIAEffect(effect) {
   ctx.save();
-  ctx.lineWidth = 1;
   ctx.strokeStyle = "rgba(0,0,0,0.08)";
+  ctx.lineWidth = 1;
   if (effect === "waves") {
     for (let y = 0; y < canvas.height; y += 20) {
       ctx.beginPath();
@@ -119,8 +121,8 @@ function addIAEffect(effect) {
     }
   } else if (effect === "lines") {
     for (let i = 0; i < 50; i++) {
-      ctx.beginPath();
       const offset = i * 10;
+      ctx.beginPath();
       ctx.moveTo(0, offset);
       ctx.lineTo(canvas.width, offset + (i % 2 === 0 ? 15 : -15));
       ctx.stroke();
@@ -130,7 +132,7 @@ function addIAEffect(effect) {
       const x = Math.random() * canvas.width;
       const y = Math.random() * canvas.height;
       ctx.beginPath();
-      ctx.arc(x, y, 5, 0, 2 * Math.PI);
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
       ctx.stroke();
     }
   }
@@ -138,8 +140,7 @@ function addIAEffect(effect) {
 }
 
 function resetCanvas() {
-  if (!image) return;
-  drawCanvas();
+  if (image) drawCanvas();
 }
 
 function download() {
@@ -148,7 +149,3 @@ function download() {
   a.href = canvas.toDataURL();
   a.click();
 }
-
-watermarkInput.addEventListener("input", () => {
-  if (image) drawCanvas();
-});
