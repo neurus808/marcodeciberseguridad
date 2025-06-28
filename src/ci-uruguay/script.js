@@ -139,9 +139,18 @@ function addIAEffect(effect) {
   ctx.restore();
 }
 
+// Expose helper functions on the window object so the React UI can invoke them
+// from event handlers. When the module was imported dynamically these
+// functions stayed scoped inside the module and weren't accessible globally,
+// causing runtime errors when clicking the "Descargar" or "Reset" buttons.
+// By attaching them to `window` they can be called as `window.resetCanvas()`
+// and `window.download()` as expected.
 function resetCanvas() {
   if (image) drawCanvas();
 }
+
+// Make available globally for the React component
+window.resetCanvas = resetCanvas;
 
 function download() {
   const a = document.createElement("a");
@@ -149,3 +158,6 @@ function download() {
   a.href = canvas.toDataURL();
   a.click();
 }
+
+// Make available globally for the React component
+window.download = download;
