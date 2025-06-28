@@ -1,57 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content=device-width, initial-scale=1.0 />
-  <title>Cuida tu Identidad - CI Uruguay</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header>
-    <h1>Cuida tu Identidad</h1>
-    <p>Protegé tu Cédula de Identidad antes de compartirla</p>
-  </header>
-
-  <main>
-    <div class="container">
-      <div class="upload-area" id="drop-zone">
-        <input type="file" id="upload" accept="image/*" />
-        <p> Arrastrá tu imagen o tocá aquí para seleccionarla</p>
-      </div>
-
-      <div class="controls">
-        <label for="watermark">Marca de agua:</label>
-        <input type="text" id="watermark" placeholder="Ej: Uso exclusivo de..." />
-
-        <label for="tool">Herramienta:</label>
-        <select id="tool">
-          <option value="draw">Pincel</option>
-          <option value="pixel">Pixelado</option>
-        </select>
-
-        <label for="iaEffect">Efecto IA (opcional):</label>
-        <select id="iaEffect">
-          <option value="none">Sin efecto</option>
-          <option value="waves">Ondas</option>
-          <option value="lines">Isolíneas</option>
-          <option value="distort">Deformación</option>
-        </select>
-
-        <div class="buttons">
-          <button onclick="download()">Descargar</button>
-          <button onclick="resetCanvas()">Reset</button>
-        </div>
-      </div>
-
-      <canvas id="canvas"></canvas>
-    </div>
-  </main>
-
-  <footer>
-    HANDSHAKE | URUGUAY
-  </footer>
-
-  <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cuida tu Identidad - CI Uruguay</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="../src/ci-uruguay/main.jsx"></script>
+  </body>
 </html>
